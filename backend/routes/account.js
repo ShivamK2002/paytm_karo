@@ -26,48 +26,50 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
   }
   const session = await mongoose.startSession();
   session.startTransaction();
-  const account = await Account.findOne({ username: req.userId }).session(
-    session
-  );
-  const balance = account.balance;
-  //   console.log(account.balance);
-  if (balance < req.body.amount) {
-    await session.abortTransaction();
+  try {
+    const account = await Account.findOne({ username: req.userId }).session(
+      session
+    );
+    const balance = account.balance;
+    //   console.log(account.balance);
+    if (balance < req.body.amount) {
+      await session.abortTransaction();
 
-    res.status(400).json({
-      message: "Insufficient balance",
+      res.status(400).json({
+        message: "Insufficient balance",
+      });
+      return;
+    }
+    const transferAccount = await Account.findOne({
+      username: req.body.to,
+    }).session(session);
+
+    if (!transferAccount) {
+      await session.abortTransaction();
+
+      res.status(400).json({
+        message: "Invalid receiver",
+      });
+      return;
+    }
+    await Account.updateOne(
+      { username: req.userId },
+      { $inc: { balance: -req.body.amount } }
+    ).session(session);
+    await Account.updateOne(
+      { username: transferAccount.username },
+      { $inc: { balance: req.body.amount } }
+    ).session(session);
+    await session.commitTransaction();
+    return res.status(200).json({
+      msg: "Transaction success",
     });
-    return;
-  }
-  const transferAccount = await Account.findOne({
-    username: req.body.to,
-  }).session(session);
-
-  if (!transferAccount) {
+  } catch (e) {
     await session.abortTransaction();
-
     res.status(400).json({
-      message: "Invalid receiver",
+      message: "something went wrong",
     });
-    return;
   }
-  await Account.updateOne(
-    { username: req.userId },
-    { $inc: { balance: -req.body.amount } }
-  ).session(session);
-  await Account.updateOne(
-    { username: transferAccount.username },
-    { $inc: { balance: req.body.amount } }
-  ).session(session);
-  res.status(200).json({
-    msg: "Transaction success",
-  });
-  return;
-  await session.commitTransaction();
-
-  res.status(400).json({
-    message: "Invalid sender",
-  });
 });
 
 module.exports = accountRouter;

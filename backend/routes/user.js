@@ -2,7 +2,7 @@ const express = require("express");
 const userRouter = express.Router();
 const zod = require("zod");
 const jwt = require("jsonwebtoken");
-const { User } = require("../db/db");
+const { User, Account } = require("../db/db");
 const mongoose = require("mongoose");
 const JWT_SECRET = require("../config");
 const authMiddleware = require("../middleware");
@@ -25,6 +25,7 @@ const updateBody = zod.object({
 userRouter.post("/signup", async (req, res) => {
   const username = req.body.username;
   const response = signupSchema.safeParse(req.body);
+  console.log(req.body);
   if (!response.success)
     res.status(411).json({
       message: "Incorrect inputs",
@@ -36,12 +37,16 @@ userRouter.post("/signup", async (req, res) => {
         message: "Email exists",
       });
     else {
-      await User.create(req.body);
-      const token = jwt.sign({ username: username }, JWT_SECRET);
+      const user = await User.create(req.body);
+      const balance = Math.ceil(Math.random() * 1000);
+      const username = user.username;
+      await Account.create({ username, balance: balance });
 
+      const token = jwt.sign({ username: username }, JWT_SECRET);
       res.status(200).json({
         message: "User created successfully",
         token: token,
+        balance: balance,
       });
     }
   }
@@ -78,7 +83,7 @@ userRouter.put("/", authMiddleware, async (req, res) => {
     });
   } else {
     const result = await User.updateOne(
-      { username: req.userId },
+      { username: req.username },
       { $set: req.body }
     );
 

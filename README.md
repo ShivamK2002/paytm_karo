@@ -1,6 +1,6 @@
-## Building a basic version of PayTM
+# Building a basic version of PayTM
 
-# Backend Features
+## Backend Features
 
 - Transactions implemented in MongoDB
 - Supports user SignUp, SignIn, etc routes

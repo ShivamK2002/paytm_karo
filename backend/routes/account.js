@@ -22,6 +22,7 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
     res.status(400).json({
       message: "Invalid details",
     });
+    return;
   }
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -42,14 +43,14 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
     username: req.body.to,
   }).session(session);
 
-  //   if (!transferAccount) {
-  //     await session.abortTransaction();
+  if (!transferAccount) {
+    await session.abortTransaction();
 
-  //     res.status(400).json({
-  //       message: "Invalid receiver",
-  //     });
-  //     return;
-  //   }
+    res.status(400).json({
+      message: "Invalid receiver",
+    });
+    return;
+  }
   await Account.updateOne(
     { username: req.userId },
     { $inc: { balance: -req.body.amount } }
@@ -61,6 +62,7 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
   res.status(200).json({
     msg: "Transaction success",
   });
+  return;
   await session.commitTransaction();
 
   res.status(400).json({

@@ -1,7 +1,15 @@
+import Appbar from "../components/Appbar";
+import { Balance } from "../components/Balance";
+import { Users } from "../components/Users";
+
 export function Dashboard() {
   return (
-    <>
-      <h1>This is Dashboard route</h1>
-    </>
+    <div>
+      <Appbar />
+      <div className="p-7">
+        <Balance value={100} />
+        <Users />
+      </div>
+    </div>
   );
 }

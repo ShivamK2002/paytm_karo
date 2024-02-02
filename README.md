@@ -7,4 +7,8 @@
 - Real Time balance updation in database
 
 ## Fronted looks like this:
+
 ![Alt text](https://github.com/ShivamK2002/paytm_karo/blob/main/images/signup.png)
+![Alt text](https://github.com/ShivamK2002/paytm_karo/blob/main/images/signin.png)
+![Alt text](https://github.com/ShivamK2002/paytm_karo/blob/main/images/dashboard.png)
+![Alt text](https://github.com/ShivamK2002/paytm_karo/blob/main/images/sendmoney.png)

@@ -25,7 +25,7 @@ const updateBody = zod.object({
 userRouter.post("/signup", async (req, res) => {
   const username = req.body.username;
   const response = signupSchema.safeParse(req.body);
-  console.log(req.body);
+  // console.log(req.body);
   if (!response.success)
     res.status(411).json({
       message: "Incorrect inputs",

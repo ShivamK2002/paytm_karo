@@ -5,7 +5,6 @@ export default function SendMoney() {
   const [amount, setAmount] = useState(0);
   const [search] = useSearchParams();
   const username = search.get("username");
-  console.log(username);
   const name = search.get("name");
   return (
     <div className="flex justify-center h-screen bg-gray-100">
@@ -17,7 +16,9 @@ export default function SendMoney() {
           <div className="p-6">
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
-                <span className="text-2xl text-white">A</span>
+                <span className="text-2xl text-white">
+                  {name[0].toUpperCase()}
+                </span>
               </div>
               <h3 className="text-2xl font-semibold">{name}</h3>
             </div>
@@ -27,6 +28,7 @@ export default function SendMoney() {
                   Amount (in Rs)
                 </label>
                 <input
+                  min={0}
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}

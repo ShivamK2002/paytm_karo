@@ -5,7 +5,6 @@ export default function SendMoney() {
   const [amount, setAmount] = useState(0);
   const [search] = useSearchParams();
   const username = search.get("username");
-  console.log(username);
   const name = search.get("name");
   return (
     <div className="flex justify-center h-screen bg-gray-100">
@@ -38,7 +37,6 @@ export default function SendMoney() {
               </div>
               <button
                 onClick={() => {
-                  console.log(username, amount);
                   axios.post(
                     "http://localhost:3000/api/v1/account/transfer",
                     {

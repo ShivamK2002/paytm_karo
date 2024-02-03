@@ -33,12 +33,7 @@ export const Users = () => {
         ></input>
       </div>
       <div>
-        {console.log(users)}
-        {users &&
-          users.map(
-            (user, index) => <User key={index} user={user} />
-            // console.log(user)
-          )}
+        {users && users.map((user, index) => <User key={index} user={user} />)}
       </div>
     </>
   );

@@ -4,7 +4,7 @@ const zod = require("zod");
 const jwt = require("jsonwebtoken");
 const { User, Account } = require("../db/db");
 const mongoose = require("mongoose");
-const JWT_SECRET = require("../config");
+const JWT_SECRET = process.env.JWT_SECRET;
 const authMiddleware = require("../middleware");
 const signupSchema = zod.object({
   username: zod.string().email(),
@@ -25,7 +25,6 @@ const updateBody = zod.object({
 userRouter.post("/signup", async (req, res) => {
   const username = req.body.username;
   const response = signupSchema.safeParse(req.body);
-  // console.log(req.body);
   if (!response.success)
     res.status(411).json({
       message: "Incorrect inputs",
@@ -57,7 +56,7 @@ userRouter.post("/signin", async (req, res) => {
   const response = singinSchema.safeParse(req.body);
   if (!response.success) {
     res.status(411).json({
-      message: "Error while logging in",
+      message: "Invalid data",
     });
   } else {
     const isExists = await User.findOne({ username: username });
@@ -100,7 +99,6 @@ userRouter.put("/", authMiddleware, async (req, res) => {
 });
 userRouter.get("/bulk", authMiddleware, async (req, res) => {
   const myUsername = req.userId;
-  console.log(myUsername);
   const filter = req.query.filter || "";
   try {
     const users = await User.find({

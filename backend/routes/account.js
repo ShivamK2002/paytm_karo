@@ -31,7 +31,6 @@ accountRouter.post("/transfer", authMiddleware, async (req, res) => {
       session
     );
     const balance = account.balance;
-    //   console.log(account.balance);
     if (balance < req.body.amount) {
       await session.abortTransaction();
 

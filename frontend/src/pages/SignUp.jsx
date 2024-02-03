@@ -4,8 +4,10 @@ import InputBox from "../components/InputBox";
 import ButtonComponent from "../components/ButtonComponent";
 import BottomWarning from "../components/BottomWarning";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 export function SignUp() {
+  const navigate = useNavigate();
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [username, setUsername] = useState("");
@@ -49,13 +51,18 @@ export function SignUp() {
             />
 
             <ButtonComponent
-              onClick={() => async () => {
-                await axios.post("http://localhost:3000/api/v1/user/signup", {
-                  username,
-                  password,
-                  firstname,
-                  lastname,
-                });
+              onClick={async () => {
+                const response = await axios.post(
+                  "http://localhost:3000/api/v1/user/signup",
+                  {
+                    username,
+                    password,
+                    firstname,
+                    lastname,
+                  }
+                );
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard");
               }}
               label={"Sign Up"}
             />

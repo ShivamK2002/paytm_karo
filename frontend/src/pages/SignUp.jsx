@@ -47,20 +47,10 @@ export function SignUp() {
               label={"Password"}
               placeholder={"123"}
             />
-            {/* <ButtonComponent
-              onClick={async () => {
-                await axios.post("https://localhost/3000/api/v1/user/signup", {
-                  username,
-                  password,
-                  firstname,
-                  lastname,
-                });
-              }}
-              label={"Sign Up"}
-            /> */}
+
             <ButtonComponent
               onClick={() => async () => {
-                await axios.post("https://localhost/3000/api/v1/user/signup", {
+                await axios.post("http://localhost:3000/api/v1/user/signup", {
                   username,
                   password,
                   firstname,

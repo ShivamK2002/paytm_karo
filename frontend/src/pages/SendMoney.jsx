@@ -2,11 +2,18 @@ import axios from "axios";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import successPopup from "../components/SuccessPopup";
+import SuccessPopup from "../components/SuccessPopup";
+import ErrorPopup from "../components/ErrorPopup";
+import { useNavigate } from "react-router-dom";
 export default function SendMoney() {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [success, setSuccess] = useState(false);
   const [search] = useSearchParams();
   const username = search.get("username");
   const name = search.get("name");
+  const navigate = useNavigate();
   return (
     <>
       {/* <Navbar /> */}
@@ -33,31 +40,48 @@ export default function SendMoney() {
                       setAmount(e.target.value);
                     }}
                     type="number"
+                    value={amount}
                     className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                     id="amount"
                     placeholder="Enter amount"
                   />
                 </div>
                 <button
-                  onClick={() => {
-                    axios.post(
-                      "http://localhost:3000/api/v1/account/transfer",
-                      {
-                        to: username,
-                        amount: Number(amount),
-                      },
-                      {
-                        headers: {
-                          authorization:
-                            "Bearer " + localStorage.getItem("token"),
-                        },
-                      }
-                    );
+                  onClick={async () => {
+                    try {
+                      await axios
+                        .post(
+                          "http://localhost:3000/api/v1/account/transfer",
+                          {
+                            to: username,
+                            amount: Number(amount),
+                          },
+                          {
+                            headers: {
+                              authorization:
+                                "Bearer " + localStorage.getItem("token"),
+                            },
+                          }
+                        )
+                        .then(setSuccess(true))
+                        .then(setTimeout(() => navigate("/dashboard"), 2000));
+                    } catch (error) {
+                      if (error.response.data.message) {
+                        setErrorMessage(error.response.data.message);
+                      } else setErrorMessage("It's not you but us...");
+                    } finally {
+                      setTimeout(() => {
+                        setAmount(1);
+                        setErrorMessage("");
+                      }, 3000);
+                    }
                   }}
                   className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white"
                 >
                   Initiate Transfer
                 </button>
+                {errorMessage && <ErrorPopup errorMessage={errorMessage} />}
+                {success && <SuccessPopup successMessage={"Done"} />}
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ export function Dashboard() {
   return (
     <div>
       {/* <Navbar /> */}
-      <Appbar />
+      {/* <Appbar /> */}
       <div className="p-7">
         <Balance value={val} />
         <Users />

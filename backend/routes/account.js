@@ -6,7 +6,7 @@ const zod = require("zod");
 const { mongoose } = require("mongoose");
 const transferSchema = zod.object({
   to: zod.string(),
-  amount: zod.number(),
+  amount: zod.number().min(1),
 });
 
 accountRouter.get("/balance", authMiddleware, async (req, res) => {

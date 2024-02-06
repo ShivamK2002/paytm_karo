@@ -16,7 +16,7 @@ export function SignIn() {
   return (
     <>
       {/* <Navbar /> */}
-      <div className="bgh-screen flex justify-center">
+      <div className="h-screen flex justify-center">
         <div className="flex flex-col justify-center">
           <div className="rounded-lg bg-slate-200 text-black w-80 text-center p-2 h-max px-4">
             <Heading label={"Log In"} />

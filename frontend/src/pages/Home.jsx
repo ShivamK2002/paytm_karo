@@ -4,7 +4,6 @@ export default function Home() {
   return (
     <>
       <div>
-        <Navbar />
         <div className="w-36 pt-36 pl-20">
           <img src="../img/paytm_upi.avif" alt="" />
         </div>

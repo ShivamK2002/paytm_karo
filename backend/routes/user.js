@@ -53,6 +53,7 @@ userRouter.post("/signup", async (req, res) => {
 
 userRouter.post("/signin", async (req, res) => {
   const username = req.body.username;
+  const password = req.body.password;
   const response = singinSchema.safeParse(req.body);
   if (!response.success) {
     res.status(411).json({
@@ -62,9 +63,13 @@ userRouter.post("/signin", async (req, res) => {
     const isExists = await User.findOne({ username: username });
     if (!isExists)
       res.status(411).json({
-        message: "Error while logging in",
+        message: "Please sign up...",
       });
-    else {
+    else if (isExists.password != password) {
+      res.status(403).json({
+        message: "Incorrect password",
+      });
+    } else {
       const token = jwt.sign({ username: username }, JWT_SECRET);
 
       res.status(200).json({

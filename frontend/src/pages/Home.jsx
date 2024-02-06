@@ -4,10 +4,10 @@ export default function Home() {
   return (
     <>
       <div>
-        <div className="w-36 pt-36 pl-20">
+        <div className="flex md:w-36 pt-36 pl-20">
           <img src="../img/paytm_upi.avif" alt="" />
         </div>
-        <div className="pt-10 justify-end grid grid-cols-2 pl-16">
+        <div className="pt-10 md:grid grid-cols-2 pl-16 sm:justify-normal ">
           <div className=" ">
             <div className="text-6xl font-bold">
               India's Most-loved <br />
@@ -19,7 +19,7 @@ export default function Home() {
               and do a lot more.
             </div>
           </div>
-          <div className="flex justify-end pr-10 px-72 h-7/8">
+          <div className="flex-start sm:flex justify-end pr-10 px-72">
             <img src="../img/paytm_home.avif" alt="" />
           </div>
         </div>

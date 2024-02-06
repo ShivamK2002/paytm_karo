@@ -3,6 +3,8 @@ import axios from "axios";
 import Appbar from "../components/Appbar";
 import { Balance } from "../components/Balance";
 import { Users } from "../components/Users";
+import Navbar from "../components/Navbar";
+// const BASEURL = process.env.BASEURL;
 export function Dashboard() {
   const [val, setVal] = useState(0);
   useEffect(() => {
@@ -17,6 +19,7 @@ export function Dashboard() {
 
   return (
     <div>
+      <Navbar />
       <Appbar />
       <div className="p-7">
         <Balance value={val} />
